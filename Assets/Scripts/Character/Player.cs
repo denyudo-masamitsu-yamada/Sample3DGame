@@ -19,7 +19,16 @@ public class Player : Character
     CameraController cameraCtrl = null;
 
     ActionState actionState = ActionState.Idle;
-    AnimationID attackComboAnimID = AnimationID.Attack_1;
+
+    // 現在の攻撃アニメID
+    AnimationID attackAnimID = AnimationID.Attack_1;
+
+    // 予約攻撃アニメID
+    AnimationID reserveAttackAnimID = AnimationID.Attack_1;
+
+    // 入力受付？
+    bool isAttackAcceptInput = false;
+    
 
     public override void Init()
     {
@@ -48,21 +57,59 @@ public class Player : Character
 
     void ChangeActionState(ActionState state)
     {
+        if (actionState == state)
+        {
+            OnSameActionState();
+            return;
+        }
+
         // 終了処理
+        OnFinishActionState();
+
+        actionState = state;
+
+        // 開始処理
+        OnStartActionState();
+    }
+
+    /// <summary>
+    /// 同じ状態の処理
+    /// </summary>
+    void OnSameActionState()
+    {
+        switch (actionState)
+        {
+            case ActionState.Attack:
+                reserveAttackAnimID++;
+                isAttackAcceptInput = false;
+                break;
+        }
+    }
+
+    /// <summary>
+    /// 終了処理
+    /// </summary>
+    void OnFinishActionState()
+    {
         switch (actionState)
         {
             case ActionState.Idle:
                 break;
         }
+    }
 
-        actionState = state;
-
-        // 前処理
+    /// <summary>
+    /// 開始処理
+    /// </summary>
+    void OnStartActionState()
+    {
         switch (actionState)
         {
             case ActionState.Attack:
-                attackComboAnimID = AnimationID.Attack_1;
-                PlayAnimation(attackComboAnimID);
+                isAttackAcceptInput = false;
+                attackAnimID = AnimationID.Attack_1;
+                reserveAttackAnimID = attackAnimID;
+                PlayAnimation(attackAnimID);
                 break;
         }
     }
@@ -75,7 +122,15 @@ public class Player : Character
         // 上の処理が、優先度高い！
 
         // 攻撃条件
-        if (actionState == ActionState.Idle ||
+        if (actionState == ActionState.Attack)
+        {
+            if (isAttackAcceptInput && InputManager.IsAttack())
+            {
+                ChangeActionState(ActionState.Attack);
+                return;
+            }
+        }
+        else if (actionState == ActionState.Idle ||
             actionState == ActionState.Move)
         {
             if (InputManager.IsAttack())
@@ -136,32 +191,54 @@ public class Player : Character
         }
     }
 
+    /// <summary>
+    /// 攻撃更新処理
+    /// </summary>
     void UpdateAttack()
     {
-
     }
 
     /// <summary>
     /// 攻撃開始通知
     /// モーションイベントで呼ばれるコールバック
     /// </summary>
-    void Hit()
+    protected override void OnAttackHit()
     {
 
     }
 
     /// <summary>
-    /// 次攻撃の通知
+    /// 次攻撃の入力受付開始の通知
     /// モーションイベントで呼ばれるコールバック
     /// </summary>
-    void NextAttackCombo()
+    protected override void OnStartNextAttackCombo()
     {
-        if (attackComboAnimID == AnimationID.Attack_3)
+        isAttackAcceptInput = true;
+    }
+
+    /// <summary>
+    /// 次攻撃の入力受付終了の通知
+    /// モーションイベントで呼ばれるコールバック
+    /// </summary>
+    protected override void OnEndNextAttackCombo()
+    {
+        if (attackAnimID == AnimationID.Attack_3)
         {
             return;
         }
 
-        attackComboAnimID++;
-        PlayAnimation(attackComboAnimID);
+        // 同じなら、終了！
+        if (reserveAttackAnimID == attackAnimID)
+        {
+            return;
+        }
+
+        PlayAnimation(reserveAttackAnimID);
+        attackAnimID = reserveAttackAnimID;
+    }
+
+    protected override void OnIdle()
+    {
+        ChangeActionState(ActionState.Idle);
     }
 }

@@ -50,8 +50,6 @@ public class Character : MonoBehaviour
     void LateUpdate()
     {
         LateUpdateExecute();
-
-        SelfAnimator.SetInteger(AnimRequestIDHash, -1);
     }
 
     protected virtual void LateUpdateExecute() { }
@@ -72,6 +70,35 @@ public class Character : MonoBehaviour
     protected void PlayAnimation(AnimationID animID)
     {
         SelfAnimator.SetInteger(AnimRequestIDHash, (int)animID);
+    }
+
+    /// <summary>
+    /// 攻撃開始通知
+    /// モーションイベントで呼ばれるコールバック
+    /// </summary>
+    protected virtual void OnAttackHit()
+    {
+    }
+
+    /// <summary>
+    /// 次攻撃の入力受付開始の通知
+    /// モーションイベントで呼ばれるコールバック
+    /// </summary>
+    protected virtual void OnStartNextAttackCombo()
+    {
+    }
+
+    /// <summary>
+    /// 次攻撃の入力受付終了の通知
+    /// モーションイベントで呼ばれるコールバック
+    /// </summary>
+    protected virtual void OnEndNextAttackCombo()
+    {
+
+    }
+
+    protected virtual void OnIdle()
+    {
     }
 }
 
