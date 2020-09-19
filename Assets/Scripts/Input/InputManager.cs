@@ -19,4 +19,14 @@ public class InputManager : MonoBehaviour
     {
         return Input.GetAxis("CameraRotate");
     }
+
+    public static bool IsAttack()
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            return true;
+        }
+
+        return false;
+    }
 }

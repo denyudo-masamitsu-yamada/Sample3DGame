@@ -7,8 +7,19 @@ using UnityEngine;
 /// </summary>
 public class Player : Character
 {
+    enum ActionState
+    {
+        Idle,
+        Move,
+        Attack,
+        Damage,
+    }
+
     [SerializeField]
     CameraController cameraCtrl = null;
+
+    ActionState actionState = ActionState.Idle;
+    AnimationID attackComboAnimID = AnimationID.Attack_1;
 
     public override void Init()
     {
@@ -19,7 +30,87 @@ public class Player : Character
 
     protected override void UpdateExecute()
     {
-        UpdateMove();
+        UpdateInput();
+
+        switch (actionState)
+        {
+            case ActionState.Idle:
+                UpdateIdle();
+                break;
+            case ActionState.Move:
+                UpdateMove();
+                break;
+            case ActionState.Attack:
+                UpdateAttack();
+                break;
+        }
+    }
+
+    void ChangeActionState(ActionState state)
+    {
+        // 終了処理
+        switch (actionState)
+        {
+            case ActionState.Idle:
+                break;
+        }
+
+        actionState = state;
+
+        // 前処理
+        switch (actionState)
+        {
+            case ActionState.Attack:
+                attackComboAnimID = AnimationID.Attack_1;
+                PlayAnimation(attackComboAnimID);
+                break;
+        }
+    }
+
+    /// <summary>
+    /// 入力処理
+    /// </summary>
+    void UpdateInput()
+    {
+        // 上の処理が、優先度高い！
+
+        // 攻撃条件
+        if (actionState == ActionState.Idle ||
+            actionState == ActionState.Move)
+        {
+            if (InputManager.IsAttack())
+            {
+                ChangeActionState(ActionState.Attack);
+                return;
+            }
+        }
+
+        // 移動条件
+        if (actionState == ActionState.Idle)
+        {
+            Vector3 moveAxis = InputManager.GetMoveAxis();
+            if (moveAxis.sqrMagnitude > 0.0f)
+            {
+                ChangeActionState(ActionState.Move);
+                return;
+            }
+        }
+
+        // 停止条件
+        if (actionState == ActionState.Move)
+        {
+            Vector3 moveAxis = InputManager.GetMoveAxis();
+            if (moveAxis.sqrMagnitude <= 0.0f)
+            {
+                ChangeActionState(ActionState.Idle);
+                return;
+            }
+        }
+    }
+
+    void UpdateIdle()
+    {
+        PlayAnimation(AnimationID.Idle);
     }
 
     /// <summary>
@@ -43,9 +134,34 @@ public class Player : Character
 
             PlayAnimation(AnimationID.Run);
         }
-        else
+    }
+
+    void UpdateAttack()
+    {
+
+    }
+
+    /// <summary>
+    /// 攻撃開始通知
+    /// モーションイベントで呼ばれるコールバック
+    /// </summary>
+    void Hit()
+    {
+
+    }
+
+    /// <summary>
+    /// 次攻撃の通知
+    /// モーションイベントで呼ばれるコールバック
+    /// </summary>
+    void NextAttackCombo()
+    {
+        if (attackComboAnimID == AnimationID.Attack_3)
         {
-            PlayAnimation(AnimationID.Idle);
+            return;
         }
+
+        attackComboAnimID++;
+        PlayAnimation(attackComboAnimID);
     }
 }

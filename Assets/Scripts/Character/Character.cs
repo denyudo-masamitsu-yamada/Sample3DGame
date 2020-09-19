@@ -15,7 +15,9 @@ public class Character : MonoBehaviour
         Idle = 0,
         Run = 1,
 
-        Attack = 10,
+        Attack_1 = 10,
+        Attack_2 = 11,
+        Attack_3 = 12,
 
         Damage = 100,
         Dead = 101,
