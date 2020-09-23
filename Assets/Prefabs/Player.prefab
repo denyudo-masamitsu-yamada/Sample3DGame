@@ -4456,9 +4456,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  headBoneTrans: {fileID: 8262882075169421096}
   status:
     HP: 100
-    AttackPower: 10
+    AttackPower: 50
     Defence: 5
     CheckTargetDistance: 5
     CheckTargetAngle: 45

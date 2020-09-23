@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+public enum CharaType
+{
+    None,
+    Player,
+    Enemy,
+}
+
 /// <summary>
 /// キャラクターベースクラス
 /// </summary>
@@ -27,21 +34,39 @@ public class Character : MonoBehaviour
     float moveSpeed = 5.0f;
 
     [SerializeField]
+    Transform headBoneTrans = null;
+
+    [SerializeField]
     CharacterStatus status = new CharacterStatus();
 
     public Transform SelfTransform { get; private set; }
     protected NavMeshAgent SelfNavmeshAgent { get; private set; }
     protected Animator SelfAnimator { get; private set; }
-    protected Character TargetChara { get; private set; } = null;
-
-    AttackHitCollider[] attackHitColliders = null;
-    List<int> hitObjInstanceIDs = new List<int>();
+    protected Character TargetingChara { get; private set; } = null;
+    protected Character TargetedChara { get; private set; } = null;
 
     /// <summary>
     /// 現在のHP
     /// </summary>
     public int CurrentHP { get; private set; }
 
+    /// <summary>
+    /// キャラタイプ
+    /// </summary>
+    public CharaType CharaType { get; private set; }
+
+    AttackHitCollider[] attackHitColliders = null;
+    List<int> hitObjInstanceIDs = new List<int>();
+    UICharaHpBar uiCharaHpBar = null;
+
+    /// <summary>
+    /// Headのボーンを取得
+    /// </summary>
+    /// <returns></returns>
+    public Transform GetHeadBoneTransform()
+    {
+        return headBoneTrans;
+    }
 
     /// <summary>
     /// ステータス取得
@@ -55,8 +80,10 @@ public class Character : MonoBehaviour
     /// <summary>
     /// 初期化
     /// </summary>
-    public virtual void Init()
+    public virtual void Init(CharaType charaType, UICharaHpBar uiCharaHpBar)
     {
+        CharaType = charaType;
+
         SelfTransform = transform;
         SelfNavmeshAgent = GetComponent<NavMeshAgent>();
         SelfAnimator = GetComponent<Animator>();
@@ -68,6 +95,9 @@ public class Character : MonoBehaviour
         }
 
         CurrentHP = status.HP;
+
+        this.uiCharaHpBar = uiCharaHpBar;
+        uiCharaHpBar.Register(this);
     }
 
     private void Update()
@@ -165,7 +195,7 @@ public class Character : MonoBehaviour
     public void Damage(int damage, Transform attackerTrans)
     {
         // ダメージ計算し、最小ダメージを１にする。
-        int calcDamage = status.Defence - damage;
+        int calcDamage = damage - status.Defence;
         calcDamage = Mathf.Max(calcDamage, 1);
 
         CurrentHP -= calcDamage;
@@ -188,7 +218,17 @@ public class Character : MonoBehaviour
     /// <summary>
     /// 死亡時に呼ばれる
     /// </summary>
-    protected virtual void OnDead(Transform attackerTrans) { }
+    protected virtual void OnDead(Transform attackerTrans)
+    {
+        // 自分自身をターゲットしているキャラのターゲット情報をNULLにする
+        if (TargetedChara != null)
+        {
+            TargetedChara.SetTarget(null);
+            TargetedChara = null;
+        }
+
+        uiCharaHpBar.Unregister(this);
+    }
 
     /// <summary>
     /// 死亡？
@@ -217,7 +257,14 @@ public class Character : MonoBehaviour
     /// <param name="chara"></param>
     protected void SetTarget(Character chara)
     {
-        TargetChara = chara;
+        // ターゲットキャラ
+        TargetingChara = chara;
+
+        if (TargetingChara != null)
+        {
+            // 自身をターゲットしているキャラ
+            TargetingChara.TargetedChara = this;
+        }
     }
 
     /// <summary>
@@ -255,9 +302,9 @@ public class Character : MonoBehaviour
     /// </summary>
     protected void UpdateLookTarget()
     {
-        if (TargetChara != null)
+        if (TargetingChara != null)
         {
-            Vector3 dir = (TargetChara.SelfTransform.localPosition - SelfTransform.localPosition).normalized;
+            Vector3 dir = (TargetingChara.SelfTransform.localPosition - SelfTransform.localPosition).normalized;
             SelfTransform.localRotation = Quaternion.LookRotation(dir);
         }
     }

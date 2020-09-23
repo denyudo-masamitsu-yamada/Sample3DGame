@@ -30,9 +30,9 @@ public class Player : Character
     bool isAttackAcceptInput = false;
     
 
-    public override void Init()
+    public override void Init(CharaType charaType, UICharaHpBar uiCharaHpBar)
     {
-        base.Init();
+        base.Init(charaType, uiCharaHpBar);
 
 
     }

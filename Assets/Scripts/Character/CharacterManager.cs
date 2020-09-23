@@ -9,6 +9,9 @@ public class CharacterManager : MonoBehaviour
     [SerializeField]
     Player player = null;
 
+    [SerializeField]
+    UICharaHpBar uiCharaHpBar = null;
+
     Enemy[] enemyList = null;
 
     private void Awake()
@@ -19,12 +22,12 @@ public class CharacterManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player.Init();
+        player.Init(CharaType.Player, uiCharaHpBar);
 
         enemyList = FindObjectsOfType<Enemy>();
         foreach (var enemy in enemyList)
         {
-            enemy.Init();
+            enemy.Init(CharaType.Enemy, uiCharaHpBar);
         }
     }
 

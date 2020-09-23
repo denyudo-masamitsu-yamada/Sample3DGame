@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Enemy : Character
 {
-    public override void Init()
+    public override void Init(CharaType charaType, UICharaHpBar uiCharaHpBar)
     {
-        base.Init();
+        base.Init(charaType, uiCharaHpBar);
 
     }
 
@@ -22,6 +22,8 @@ public class Enemy : Character
 
     protected override void OnDead(Transform attackerTrans)
     {
+        base.OnDead(attackerTrans);
+
         PlayAnimation(AnimationID.Dead);
     }
 
