@@ -9,6 +9,8 @@ public class CharacterManager : MonoBehaviour
     [SerializeField]
     Player player = null;
 
+    Enemy[] enemyList = null;
+
     private void Awake()
     {
         Instance = this;
@@ -18,10 +20,21 @@ public class CharacterManager : MonoBehaviour
     void Start()
     {
         player.Init();
+
+        enemyList = FindObjectsOfType<Enemy>();
+        foreach (var enemy in enemyList)
+        {
+            enemy.Init();
+        }
     }
 
     public Player GetPlayer()
     {
         return player;
+    }
+
+    public Enemy[] GetEnemies()
+    {
+        return enemyList;
     }
 }

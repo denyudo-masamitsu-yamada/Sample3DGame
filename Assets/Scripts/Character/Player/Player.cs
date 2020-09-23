@@ -196,15 +196,9 @@ public class Player : Character
     /// </summary>
     void UpdateAttack()
     {
-    }
-
-    /// <summary>
-    /// 攻撃開始通知
-    /// モーションイベントで呼ばれるコールバック
-    /// </summary>
-    protected override void OnAttackHit()
-    {
-
+        var enemies = CharacterManager.Instance.GetEnemies();
+        UpdateTargeting(enemies);
+        UpdateLookTarget();
     }
 
     /// <summary>
@@ -240,5 +234,21 @@ public class Player : Character
     protected override void OnIdle()
     {
         ChangeActionState(ActionState.Idle);
+    }
+
+    public override bool NotifyAttackHit(GameObject hitObj)
+    {
+        if (base.NotifyAttackHit(hitObj))
+        {
+            Enemy enemy = hitObj.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemy.Damage(GetStatus().AttackPower, SelfTransform);
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }
