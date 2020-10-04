@@ -22,16 +22,6 @@ public class EnemyTurret : Enemy
 		createBulletTiming = createBulletIntervalTime;
 	}
 
-	protected override void OnDead(Transform attackerTrans)
-	{
-		base.OnDead(attackerTrans);
-
-		Vector3 effectPos = SelfTransform.localPosition + Vector3.up;
-		EffectManager.PlayEffect(EffectID.Explosion, effectPos);
-
-		gameObject.SetActive(false);
-	}
-
 	protected override void UpdateExecute()
 	{
 		base.UpdateExecute();
@@ -53,6 +43,25 @@ public class EnemyTurret : Enemy
 			bullet.StartMove(this, createBulletTrans.position, SelfTransform.forward);
 
 			ChangeActionState(ActionState.Idle);
+		}
+	}
+
+	protected override void OnDead(Transform attackerTrans)
+	{
+		base.OnDead(attackerTrans);
+		ChangeActionState(ActionState.Dead);
+	}
+
+	protected override void OnStartActionState(ActionState actionState)
+	{
+		base.OnStartActionState(actionState);
+
+		if (actionState == ActionState.Dead)
+		{
+			Vector3 effectPos = SelfTransform.localPosition + Vector3.up;
+			EffectManager.PlayEffect(EffectID.Explosion, effectPos);
+			
+			gameObject.SetActive(false);
 		}
 	}
 }
