@@ -44,7 +44,17 @@ public class EnemyHuman : Enemy
 		}
 	}
 
-	Player FindTargetPlayer()
+    protected override void OnStartActionState(ActionState actionState)
+    {
+        base.OnStartActionState(actionState);
+		if (actionState == ActionState.Attack)
+		{
+			Vector3 effectPos = GetHeadBoneTransform().position;
+			EffectManager.PlayEffect(EffectID.Discovery, effectPos);
+		}
+    }
+
+    Player FindTargetPlayer()
 	{
 		Player targetPlayer = CharacterManager.Instance.GetPlayer();
 		if (targetPlayer.IsDead())

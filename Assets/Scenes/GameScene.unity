@@ -612,6 +612,9 @@ MonoBehaviour:
   - effectPrefab: {fileID: 8950624839484268180, guid: 45ce85b82008be84287f2c7e5bf07647,
       type: 3}
     createCount: 5
+  - effectPrefab: {fileID: 8855434715677272936, guid: 1bc9e4f49c67a6a41af3e7cb3d30bb43,
+      type: 3}
+    createCount: 5
 --- !u!1 &428610286
 GameObject:
   m_ObjectHideFlags: 0

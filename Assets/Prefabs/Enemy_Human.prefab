@@ -1743,9 +1743,9 @@ MonoBehaviour:
     HP: 100
     AttackPower: 30
     Defence: 3
-    CheckTargetDistance: 10
+    CheckTargetDistance: 8
     CheckTargetAngle: 45
-  attackTimingTime: 1
+  attackTimingTime: 2
   bulletPrefab: {fileID: 2798931075949450989, guid: 5e87e2842c881f444abeea1003941e9c,
     type: 3}
   createBulletTrans: {fileID: 917020571}

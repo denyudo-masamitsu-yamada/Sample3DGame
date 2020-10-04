@@ -6,8 +6,11 @@ public enum EffectID
 {
 	None,   // 未定義
 
-	Explosion,	// 爆発
+	Explosion,  // 爆発
+	Discovery,	// 発見
 
+	// 下に追加する
+	// 途中で追加しない！
 }
 
 public class EffectManager : MonoBehaviour
@@ -39,7 +42,7 @@ public class EffectManager : MonoBehaviour
 
 			for (int k = 0; k < effectList[i].createCount; k++)
 			{
-				var instance = Instantiate(effectList[0].effectPrefab, root.transform);
+				var instance = Instantiate(effectList[i].effectPrefab, root.transform);
 				var effectCtrl = instance.AddComponent<EffectController>();
 				effectPoolList[effectID].Add(effectCtrl);
 			}

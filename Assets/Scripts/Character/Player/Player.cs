@@ -191,7 +191,7 @@ public class Player : Character
         // 移動量が入っていたら、移動させる
         if (moveForward.sqrMagnitude > 0.0f)
         {
-            Move(moveForward);
+            Move(moveForward.normalized);
             SelfTransform.localRotation = Quaternion.LookRotation(moveForward.normalized);
 
             PlayAnimation(AnimationID.Run);
