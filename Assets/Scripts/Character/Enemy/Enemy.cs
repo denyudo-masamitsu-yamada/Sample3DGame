@@ -29,10 +29,6 @@ public class Enemy : Character
 
     protected override void OnDamage(Transform attackerTrans)
     {
-        // 攻撃者の方向にむかせる
-        Vector3 dir = (attackerTrans.localPosition - SelfTransform.localPosition).normalized;
-        SelfTransform.localRotation = Quaternion.LookRotation(dir);
-
         PlayAnimation(AnimationID.Damage);
     }
 }

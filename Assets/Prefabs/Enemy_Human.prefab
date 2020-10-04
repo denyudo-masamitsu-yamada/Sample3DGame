@@ -1599,9 +1599,9 @@ GameObject:
   - component: {fileID: 8193129449686859504}
   - component: {fileID: 8193129449686859503}
   - component: {fileID: 8193129449686859502}
-  - component: {fileID: 8193129449686859505}
+  - component: {fileID: 9034963970524772754}
   m_Layer: 11
-  m_Name: Enemy
+  m_Name: Enemy_Human
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1655,7 +1655,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -1695,7 +1695,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &8193129449686859505
+--- !u!114 &9034963970524772754
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1704,7 +1704,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8832528367045469626}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d022a8a7f9c314d38bb38d9fc40e898a, type: 3}
+  m_Script: {fileID: 11500000, guid: d13a26be16f18d44f9a30fa260bd58aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
