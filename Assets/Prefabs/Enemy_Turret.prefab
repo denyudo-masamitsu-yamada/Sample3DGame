@@ -243,6 +243,10 @@ MonoBehaviour:
     Defence: 5
     CheckTargetDistance: 10
     CheckTargetAngle: 10
+  bulletPrefab: {fileID: 2798931075949450989, guid: e18de1af1bd8f984b8ab1bf2c0537725,
+    type: 3}
+  createBulletTrans: {fileID: 1401953596735347886}
+  createBulletIntervalTime: 5
 --- !u!1001 &1401953596735211048
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -372,6 +376,12 @@ PrefabInstance:
 --- !u!4 &1401953596735347898 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400018, guid: fad35a70731ab804c975c717ee8862a5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1401953596735211048}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1401953596735347886 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400006, guid: fad35a70731ab804c975c717ee8862a5,
     type: 3}
   m_PrefabInstance: {fileID: 1401953596735211048}
   m_PrefabAsset: {fileID: 0}

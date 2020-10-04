@@ -111,6 +111,9 @@ public class Player : Character
                 reserveAttackAnimID = attackAnimID;
                 PlayAnimation(attackAnimID);
                 break;
+            case ActionState.Damage:
+                PlayAnimation(AnimationID.Damage);
+                break;
         }
     }
 
@@ -236,19 +239,8 @@ public class Player : Character
         ChangeActionState(ActionState.Idle);
     }
 
-    public override bool NotifyAttackHit(GameObject hitObj)
+    protected override void OnDamage(Transform attackerTrans)
     {
-        if (base.NotifyAttackHit(hitObj))
-        {
-            Enemy enemy = hitObj.GetComponent<Enemy>();
-            if (enemy != null)
-            {
-                enemy.Damage(GetStatus().AttackPower, SelfTransform);
-            }
-
-            return true;
-        }
-
-        return false;
+        ChangeActionState(ActionState.Damage);
     }
 }

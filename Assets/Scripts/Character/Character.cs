@@ -185,6 +185,13 @@ public class Character : MonoBehaviour
         }
 
         hitObjInstanceIDs.Add(instanceID);
+
+        Character hitChara = hitObj.GetComponent<Character>();
+        if (hitChara != null)
+        {
+            hitChara.Damage(GetStatus().AttackPower, SelfTransform);
+        }
+
         return true;
     }
 

@@ -33,6 +33,11 @@ public class AttackHitCollider : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.layer == ownerChara.gameObject.layer)
+        {
+            return;
+        }
+
         // オーナーキャラに通知する。
         ownerChara.NotifyAttackHit(other.gameObject);
     }
