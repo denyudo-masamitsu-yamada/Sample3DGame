@@ -13,6 +13,7 @@ public class Player : Character
         Move,
         Attack,
         Damage,
+        Dead,
     }
 
     [SerializeField]
@@ -113,6 +114,9 @@ public class Player : Character
                 break;
             case ActionState.Damage:
                 PlayAnimation(AnimationID.Damage);
+                break;
+            case ActionState.Dead:
+                PlayAnimation(AnimationID.Dead);
                 break;
         }
     }
@@ -242,5 +246,11 @@ public class Player : Character
     protected override void OnDamage(Transform attackerTrans)
     {
         ChangeActionState(ActionState.Damage);
+    }
+
+    protected override void OnDead(Transform attackerTrans)
+    {
+        base.OnDead(attackerTrans);
+        ChangeActionState(ActionState.Dead);
     }
 }

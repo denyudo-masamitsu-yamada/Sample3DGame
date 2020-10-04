@@ -136,6 +136,15 @@ public class Character : MonoBehaviour
     /// 攻撃開始通知
     /// モーションイベントで呼ばれるコールバック
     /// </summary>
+    protected virtual void OnAttack()
+    {
+
+    }
+
+    /// <summary>
+    /// 攻撃開始通知（終了がある場合に使う）
+    /// モーションイベントで呼ばれるコールバック
+    /// </summary>
     protected virtual void OnStartAttackHit()
     {
         hitObjInstanceIDs.Clear();

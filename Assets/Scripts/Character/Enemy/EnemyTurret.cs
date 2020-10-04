@@ -36,14 +36,23 @@ public class EnemyTurret : Enemy
 	{
 		base.UpdateExecute();
 
-		createBulletTiming -= Time.deltaTime;
-		if (createBulletTiming <= 0.0f)
+		ActionState actionState = GetActionState();
+		if (actionState == ActionState.Idle)
+		{
+			createBulletTiming -= Time.deltaTime;
+			if (createBulletTiming <= 0.0f)
+			{
+				createBulletTiming = createBulletIntervalTime;
+				ChangeActionState(ActionState.Attack);
+			}
+		}
+		else if (actionState == ActionState.Attack)
 		{
 			GameObject bulletInstance = Instantiate(bulletPrefab);
 			Bullet bullet = bulletInstance.GetComponent<Bullet>();
 			bullet.StartMove(this, createBulletTrans.position, SelfTransform.forward);
 
-			createBulletTiming = createBulletIntervalTime;
+			ChangeActionState(ActionState.Idle);
 		}
 	}
 }
