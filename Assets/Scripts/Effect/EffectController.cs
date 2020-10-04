@@ -10,7 +10,7 @@ public class EffectController : MonoBehaviour
 	{
 		// PlayOnAwakeがTRUEの場合、再生されるので、停止させる。
 		particleSystems = GetComponentsInChildren<ParticleSystem>();
-		particleSystems[0].Stop(true);
+		Stop();
 
 		// 最初は非アクティブにしておく
 		gameObject.SetActive(false);
@@ -34,7 +34,18 @@ public class EffectController : MonoBehaviour
 		gameObject.SetActive(true);
 		transform.localPosition = pos;
 
-		particleSystems[0].Play(true);
+		foreach (var particle in particleSystems)
+		{
+			particle.Play();
+		}
+	}
+
+	public void Stop()
+	{
+		foreach (var particle in particleSystems)
+		{
+			particle.Stop();
+		}
 	}
 
 	public bool IsActive()
